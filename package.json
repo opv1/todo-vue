@@ -2,20 +2,33 @@
   "name": "todo-vue",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/opv1/todo-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js --branch gh-pages"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "normalize.css": "^8.0.1",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1",
+    "uuid": "^3.4.0",
     "vue": "^3.0.0",
+    "vuedraggable": "^2.24.3",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0"
+    "@vue/compiler-sfc": "^3.0.0",
+    "stylelint": "^13.12.0",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0",
+    "vue-gh-pages": "^1.19.1"
   },
   "browserslist": [
     "> 1%",
