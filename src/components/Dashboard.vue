@@ -15,7 +15,7 @@
             <span class="dashboard__priority">{{ todo.priority }}</span>
           </div>
           <div class="dashboard__block">
-            <i class="fas fa-tag"></i>
+            <i class="dashboard__tag fas fa-tag"></i>
             <span class="dashboard__date">{{ todo.date }}</span>
           </div>
           <div class="dashboard__block">
@@ -70,6 +70,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/variables.scss';
+
 .dashboard {
   display: flex;
   flex-direction: column;
@@ -109,6 +111,7 @@ export default {
   &__item {
     display: flex;
     align-items: center;
+    padding: 0 0.5rem;
     width: 100%;
 
     &:not(:last-child) {
@@ -124,10 +127,11 @@ export default {
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    padding: 0.5rem;
     width: 100%;
     height: 100%;
-    color: rgb(110, 110, 110);
+    min-height: 55px;
+    box-shadow: inset 0 -10px 35px -30px rgba(194, 194, 194, 0.644);
+    color: $greyColor;
     transition: border 0.3s;
     resize: none;
     scrollbar-color: rgba(113, 113, 114, 0.356) transparent;
@@ -148,7 +152,7 @@ export default {
     }
 
     &:focus {
-      border: 1px solid rgb(99, 201, 248);
+      border: 1px solid $blueColor;
     }
 
     &.done {
@@ -168,25 +172,24 @@ export default {
   &__block {
     display: flex;
     align-items: center;
-    width: 100%;
     height: 100%;
-
-    i {
-      margin: 0.5rem;
-      font-size: 1.3rem;
-      color: rgb(66, 65, 65);
-      cursor: pointer;
-    }
 
     &:last-child {
       justify-content: flex-end;
-      width: 50%;
+    }
+
+    &:nth-child(1) {
+      min-width: 90px;
+    }
+
+    &:nth-child(3) {
+      min-width: 75px;
     }
   }
 
-  &__date {
-    margin: 0.5rem;
-    color: rgb(110, 110, 110);
+  &__tag {
+    font-size: 1.1rem;
+    color: #1a1a25;
   }
 
   &__color {
@@ -199,7 +202,12 @@ export default {
 
   &__priority {
     margin: 3px;
-    color: rgb(110, 110, 110);
+    color: $greyColor;
+  }
+
+  &__date {
+    margin: 0.5rem;
+    color: $greyColor;
   }
 
   &__input {
@@ -208,10 +216,10 @@ export default {
     &:checked + label::before {
       position: absolute;
       left: -28px;
-      top: -8px;
-      width: 12px;
-      height: 12px;
-      background: rgb(99, 201, 248);
+      top: -7px;
+      width: 10px;
+      height: 10px;
+      background: $blueColor;
     }
   }
 
@@ -222,22 +230,22 @@ export default {
       content: '';
       position: absolute;
       left: -32px;
-      top: -12px;
-      border: 2px solid rgb(99, 201, 248);
+      top: -11px;
+      border: 2px solid $blueColor;
       border-radius: 5px;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     &::after {
       content: '';
       position: absolute;
       left: -32px;
-      top: -12px;
-      border: 2px solid rgb(99, 201, 248);
+      top: -11px;
+      border: 2px solid $blueColor;
       border-radius: 5px;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -245,13 +253,14 @@ export default {
     outline: none;
     border: none;
     border-radius: 5px;
-    padding: 0;
+    padding: 0.5rem;
     background: none;
     transition: background 0.3s;
     cursor: pointer;
 
     i {
-      color: rgb(99, 201, 248);
+      font-size: 1.1rem;
+      color: $blueColor;
     }
 
     &:hover {
@@ -260,23 +269,48 @@ export default {
   }
 
   &__clear {
+    margin: 0.2rem;
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
     padding: 0.5rem;
-    color: rgb(99, 201, 248);
+    color: $blueColor;
     background: none;
     transition: border 0.3s;
     cursor: pointer;
 
     i {
-      margin-left: 1rem;
-      color: rgb(99, 201, 248);
+      margin-left: 0.5rem;
+      font-size: 1.1rem;
+      color: $blueColor;
     }
 
     &:hover {
-      border: 1px solid rgb(99, 201, 248);
+      border: 1px solid $blueColor;
     }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .dashboard {
+    &__item {
+      flex-direction: column;
+      border-bottom: 1px solid $blueColor;
+    }
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .dashboard {
+    &__date {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 395px) {
+  .dashboard {
+    height: calc(100% - 190px);
   }
 }
 </style>

@@ -65,7 +65,7 @@ export default createStore({
         complete: false,
       }
 
-      todos.push(newTodo)
+      todos.unshift(newTodo)
 
       commit('setTodos', todos)
     },

@@ -2,9 +2,9 @@
   <div class="header">
     <span class="header__title">todo-list</span>
     <div class="header__info">
-      <span class="header__total">total: {{ todos.length }}</span>
       <span class="header__done">done: {{ doneTodos.length }}</span>
       <span class="header__pending">pending: {{ pendingTodos.length }}</span>
+      <span class="header__total">total: {{ todos.length }}</span>
     </div>
     <form class="header__form">
       <input
@@ -46,6 +46,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/variables.scss';
+
 .header {
   display: flex;
   flex-direction: column;
@@ -55,11 +57,12 @@ export default {
     font-size: 1.5rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgb(26, 26, 37);
+    color: #1a1a25;
   }
 
   &__info {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
     padding: 1rem 0;
@@ -67,6 +70,7 @@ export default {
   }
 
   &__total {
+    margin: 0.3rem;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
@@ -77,6 +81,7 @@ export default {
   }
 
   &__done {
+    margin: 0.3rem;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
@@ -87,6 +92,7 @@ export default {
   }
 
   &__pending {
+    margin: 0.3rem;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
@@ -99,7 +105,7 @@ export default {
   &__form {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgb(99, 201, 248);
+    border-bottom: 1px solid $blueColor;
     padding: 0 0.5rem;
     width: 100%;
   }
@@ -108,7 +114,7 @@ export default {
     outline: none;
     border: none;
     width: 100%;
-    color: rgb(110, 110, 110);
+    color: #1a1a25;
 
     &::placeholder {
       color: rgba(110, 110, 110, 0.493);
@@ -119,14 +125,14 @@ export default {
     outline: none;
     border: none;
     border-radius: 5px;
-    padding: 0.4rem;
+    padding: 0.5rem;
     background: none;
     transition: background 0.3s;
     cursor: pointer;
 
     i {
-      font-size: 1.5rem;
-      color: rgb(26, 26, 37);
+      font-size: 1.1rem;
+      color: #1a1a25;
     }
 
     &:hover {
