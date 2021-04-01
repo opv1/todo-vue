@@ -4,6 +4,7 @@ import { dateFormat } from '@/utils/dateFormat'
 
 export default createStore({
   state: {
+    error: false,
     todos: [
       {
         id: 1,
@@ -31,11 +32,15 @@ export default createStore({
     ],
   },
   mutations: {
+    setError(state, payload) {
+      state.error = payload
+    },
     setTodos(state, payload) {
       state.todos = payload
     },
   },
   getters: {
+    error: (state) => state.error,
     todos: (state) => state.todos,
     doneTodos: (state) =>
       [...state.todos].filter((todo) => todo.complete === true),
@@ -44,6 +49,12 @@ export default createStore({
   },
   actions: {
     addTodo({ commit, state }, todoDescription) {
+      if (!todoDescription) {
+        return commit('setError', true)
+      } else {
+        commit('setError', false)
+      }
+
       const todos = [...state.todos]
 
       const newTodo = {
@@ -67,6 +78,17 @@ export default createStore({
       const todos = [...state.todos].filter((todo) => {
         if (todo.id === todoId) {
           todo.complete = !todo.complete
+        }
+
+        return todo
+      })
+
+      commit('setTodos', todos)
+    },
+    editDescription({ commit, state }, todoEdited) {
+      const todos = [...state.todos].filter((todo) => {
+        if (todo.id === todoEdited.id) {
+          todo.description = todoEdited.description
         }
 
         return todo

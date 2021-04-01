@@ -11,12 +11,15 @@
         class="header__input"
         v-model="value"
         type="text"
-        placeholder="Enter Todo"
+        :placeholder="placeholder"
       />
-      <button class="header__button" @click.prevent="addTodo(value)">
+      <button class="header__button" @click.prevent="submitForm">
         <i class="fas fa-arrow-right"></i>
       </button>
     </form>
+    <span class="header__error" v-show="error"
+      >Please do not leave the field empty</span
+    >
   </div>
 </template>
 
@@ -27,11 +30,16 @@ export default {
   name: 'Header',
   data: () => ({
     value: '',
+    placeholder: 'Enter anything',
   }),
   computed: {
-    ...mapGetters(['todos', 'doneTodos', 'pendingTodos']),
+    ...mapGetters(['error', 'todos', 'doneTodos', 'pendingTodos']),
   },
   methods: {
+    submitForm() {
+      this.addTodo(this.value)
+      this.value = ''
+    },
     ...mapActions(['addTodo']),
   },
 }
@@ -124,6 +132,11 @@ export default {
     &:hover {
       background: rgba(58, 56, 56, 0.089);
     }
+  }
+
+  &__error {
+    padding: 0.5rem;
+    color: #f00;
   }
 }
 </style>
