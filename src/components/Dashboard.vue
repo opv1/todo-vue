@@ -1,7 +1,7 @@
 <template>
-  <div class="dashboard">
-    <ul class="dashboard__list" v-if="todos.length !== 0">
-      <li class="dashboard__item" v-for="todo of todos" :key="todo.id">
+  <div class="dashboard" @click="clickListener">
+    <ul class="dashboard__list" v-if="displayedTodos.length !== 0">
+      <li class="dashboard__item" v-for="todo of displayedTodos" :key="todo.id">
         <textarea
           :class="['dashboard__description', { done: todo.complete }]"
           v-model="todo.description"
@@ -11,11 +11,27 @@
         />
         <div class="dashboard__control">
           <div class="dashboard__block">
-            <i class="dashboard__color"></i>
-            <span class="dashboard__priority">{{ todo.priority }}</span>
+            <i
+              class="dashboard__color"
+              :style="{
+                background: priorities[todo.priority].color,
+              }"
+            />
+            <span class="dashboard__priority" @click="showOptions(todo.id)">{{
+              todo.priority
+            }}</span>
+            <div class="dashboard__select" v-show="todo.id === selectId">
+              <span
+                class="dashboard__option"
+                v-for="priority of priorities"
+                :key="priority[todo.priority]"
+                @click="chooseOption(todo.id, priority.name)"
+                >{{ priority.name }}</span
+              >
+            </div>
           </div>
           <div class="dashboard__block">
-            <i class="dashboard__tag fas fa-tag"></i>
+            <i class="dashboard__tag fas fa-tag" />
             <span class="dashboard__date">{{ todo.date }}</span>
           </div>
           <div class="dashboard__block">
@@ -31,7 +47,7 @@
               class="dashboard__delete"
               @click.prevent="deleteTodo(todo.id)"
             >
-              <i class="fas fa-trash"></i>
+              <i class="fas fa-trash" />
             </button>
           </div>
         </div>
@@ -42,10 +58,10 @@
     </ul>
     <button
       class="dashboard__clear"
-      v-if="todos.length !== 0"
+      v-if="displayedTodos.length !== 0"
       @click.prevent="clearAll"
     >
-      Clear All <i class="fas fa-trash"></i>
+      Clear All <i class="fas fa-trash" />
     </button>
   </div>
 </template>
@@ -55,16 +71,44 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Dashboard',
+  data: () => ({
+    selectId: null,
+  }),
   computed: {
-    ...mapGetters(['todos']),
+    ...mapGetters(['priorities', 'displayedTodos']),
   },
   methods: {
     ...mapActions([
       'deleteTodo',
       'completeTodo',
       'editDescription',
+      'changePriority',
       'clearAll',
     ]),
+    clickListener(event) {
+      if (
+        !event.target.classList.contains('dashboard__priority') &&
+        this.selectId !== null
+      ) {
+        this.resetOptions()
+      }
+    },
+    showOptions(id) {
+      if (this.selectId === null) {
+        this.selectId = id
+      } else if (this.selectId !== id) {
+        this.selectId = id
+      } else {
+        this.resetOptions()
+      }
+    },
+    resetOptions() {
+      this.selectId = null
+    },
+    chooseOption(todoId, priorityName) {
+      this.resetOptions()
+      this.changePriority({ todoId, priorityName })
+    },
   },
 }
 </script>
@@ -121,6 +165,7 @@ export default {
 
   &__empty {
     font-size: 1.5rem;
+    color: $blackColor;
   }
 
   &__description {
@@ -170,6 +215,7 @@ export default {
   }
 
   &__block {
+    position: relative;
     display: flex;
     align-items: center;
     height: 100%;
@@ -179,7 +225,7 @@ export default {
     }
 
     &:nth-child(1) {
-      min-width: 90px;
+      min-width: 100px;
     }
 
     &:nth-child(3) {
@@ -187,22 +233,61 @@ export default {
     }
   }
 
-  &__tag {
-    font-size: 1.1rem;
-    color: #1a1a25;
-  }
-
   &__color {
     margin: 3px;
     border-radius: 100%;
     width: 10px;
     height: 10px;
-    background: #f00;
   }
 
   &__priority {
-    margin: 3px;
+    margin: 0.1rem;
+    border-radius: 5px;
+    padding: 0.5rem;
     color: $greyColor;
+    transition: background 0.3s;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: rgba(58, 56, 56, 0.089);
+    }
+  }
+
+  &__select {
+    position: absolute;
+    left: 18px;
+    top: 48px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $blueColor;
+    border-radius: 5px;
+    background: #fff;
+  }
+
+  &__option {
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(58, 56, 56, 0.089);
+    }
+  }
+
+  &__tag {
+    margin: 0.1rem;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    color: $blackColor;
+    transition: background 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(58, 56, 56, 0.089);
+    }
   }
 
   &__date {
@@ -225,6 +310,7 @@ export default {
 
   &__label {
     position: relative;
+    cursor: pointer;
 
     &::before {
       content: '';
@@ -250,6 +336,7 @@ export default {
   }
 
   &__delete {
+    margin: 0.1rem;
     outline: none;
     border: none;
     border-radius: 5px;

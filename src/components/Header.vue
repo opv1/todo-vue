@@ -2,9 +2,21 @@
   <div class="header">
     <span class="header__title">todo-list</span>
     <div class="header__info">
-      <span class="header__done">done: {{ doneTodos.length }}</span>
-      <span class="header__pending">pending: {{ pendingTodos.length }}</span>
-      <span class="header__total">total: {{ todos.length }}</span>
+      <span
+        :class="['header__done', { active: currentTodos === 'done' }]"
+        @click="selectTodos('done')"
+        >done: {{ doneTodos.length }}</span
+      >
+      <span
+        :class="['header__pending', { active: currentTodos === 'pending' }]"
+        @click="selectTodos('pending')"
+        >pending: {{ pendingTodos.length }}</span
+      >
+      <span
+        :class="['header__total', { active: currentTodos === 'total' }]"
+        @click="selectTodos('total')"
+        >total: {{ totalTodos.length }}</span
+      >
     </div>
     <form class="header__form">
       <input
@@ -14,7 +26,7 @@
         :placeholder="placeholder"
       />
       <button class="header__button" @click.prevent="submitForm">
-        <i class="fas fa-arrow-right"></i>
+        <i class="fas fa-arrow-right" />
       </button>
     </form>
     <span class="header__error" v-show="error"
@@ -33,14 +45,20 @@ export default {
     placeholder: 'Enter anything',
   }),
   computed: {
-    ...mapGetters(['error', 'todos', 'doneTodos', 'pendingTodos']),
+    ...mapGetters([
+      'error',
+      'currentTodos',
+      'totalTodos',
+      'doneTodos',
+      'pendingTodos',
+    ]),
   },
   methods: {
+    ...mapActions(['selectTodos', 'addTodo']),
     submitForm() {
       this.addTodo(this.value)
       this.value = ''
     },
-    ...mapActions(['addTodo']),
   },
 }
 </script>
@@ -57,7 +75,7 @@ export default {
     font-size: 1.5rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #1a1a25;
+    color: $blackColor;
   }
 
   &__info {
@@ -69,37 +87,55 @@ export default {
     width: 100%;
   }
 
-  &__total {
-    margin: 0.3rem;
-    border-radius: 5px;
-    padding: 0.3rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #3b037a;
-    background: rgba(70, 1, 148, 0.2);
-  }
-
   &__done {
     margin: 0.3rem;
+    border: 1px solid #03d30d;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #03d30d;
-    background: rgba(3, 211, 13, 0.2);
+    transition: background 0.3s;
+    cursor: pointer;
+
+    &.active {
+      background: rgba(3, 211, 13, 0.2);
+    }
   }
 
   &__pending {
     margin: 0.3rem;
+    border: 1px solid #cc0e00;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #cc0e00;
-    background: rgba(204, 14, 0, 0.2);
+    transition: background 0.3s;
+    cursor: pointer;
+
+    &.active {
+      background: rgba(204, 14, 0, 0.2);
+    }
+  }
+
+  &__total {
+    margin: 0.3rem;
+    border: 1px solid #3b037a;
+    border-radius: 5px;
+    padding: 0.3rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3b037a;
+    transition: background 0.3s;
+    cursor: pointer;
+
+    &.active {
+      background: rgba(70, 1, 148, 0.2);
+    }
   }
 
   &__form {
@@ -114,7 +150,7 @@ export default {
     outline: none;
     border: none;
     width: 100%;
-    color: #1a1a25;
+    color: $blackColor;
 
     &::placeholder {
       color: rgba(110, 110, 110, 0.493);
@@ -122,6 +158,7 @@ export default {
   }
 
   &__button {
+    margin: 0.1rem;
     outline: none;
     border: none;
     border-radius: 5px;
@@ -132,7 +169,7 @@ export default {
 
     i {
       font-size: 1.1rem;
-      color: #1a1a25;
+      color: $blackColor;
     }
 
     &:hover {

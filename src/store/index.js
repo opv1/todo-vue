@@ -5,7 +5,14 @@ import { dateFormat } from '@/utils/dateFormat'
 export default createStore({
   state: {
     error: false,
-    todos: [
+    priorities: {
+      Low: { name: 'Low', color: '#3b037a' },
+      Medium: { name: 'Medium', color: '#f80' },
+      High: { name: 'High', color: '#f00' },
+    },
+    currentTodos: 'total',
+    displayedTodos: [],
+    totalTodos: [
       {
         id: 1,
         description:
@@ -35,19 +42,39 @@ export default createStore({
     setError(state, payload) {
       state.error = payload
     },
-    setTodos(state, payload) {
-      state.todos = payload
+    setCurrentTodos(state, payload) {
+      state.currentTodos = payload
+    },
+    setDisplayedTodos(state, payload) {
+      state.displayedTodos = payload
+    },
+    setTotalTodos(state, payload) {
+      state.totalTodos = payload
     },
   },
   getters: {
     error: (state) => state.error,
-    todos: (state) => state.todos,
+    priorities: (state) => state.priorities,
+    currentTodos: (state) => state.currentTodos,
+    displayedTodos: (state) => {
+      if (state.currentTodos === 'done')
+        return [...state.totalTodos].filter((todo) => todo.complete === true)
+
+      if (state.currentTodos === 'pending')
+        return [...state.totalTodos].filter((todo) => todo.complete === false)
+
+      if (state.currentTodos === 'total') return [...state.totalTodos]
+    },
+    totalTodos: (state) => state.totalTodos,
     doneTodos: (state) =>
-      [...state.todos].filter((todo) => todo.complete === true),
+      [...state.totalTodos].filter((todo) => todo.complete === true),
     pendingTodos: (state) =>
-      [...state.todos].filter((todo) => todo.complete === false),
+      [...state.totalTodos].filter((todo) => todo.complete === false),
   },
   actions: {
+    selectTodos({ commit }, todos) {
+      commit('setCurrentTodos', todos)
+    },
     addTodo({ commit, state }, todoDescription) {
       if (!todoDescription) {
         return commit('setError', true)
@@ -55,7 +82,7 @@ export default createStore({
         commit('setError', false)
       }
 
-      const todos = [...state.todos]
+      const todos = [...state.totalTodos]
 
       const newTodo = {
         id: uuidv4(),
@@ -67,15 +94,15 @@ export default createStore({
 
       todos.unshift(newTodo)
 
-      commit('setTodos', todos)
+      commit('setTotalTodos', todos)
     },
     deleteTodo({ commit, state }, todoId) {
-      const todos = [...state.todos].filter((todo) => todo.id !== todoId)
+      const todos = [...state.totalTodos].filter((todo) => todo.id !== todoId)
 
-      commit('setTodos', todos)
+      commit('setTotalTodos', todos)
     },
     completeTodo({ commit, state }, todoId) {
-      const todos = [...state.todos].filter((todo) => {
+      const todos = [...state.totalTodos].map((todo) => {
         if (todo.id === todoId) {
           todo.complete = !todo.complete
         }
@@ -83,10 +110,10 @@ export default createStore({
         return todo
       })
 
-      commit('setTodos', todos)
+      commit('setTotalTodos', todos)
     },
     editDescription({ commit, state }, todoEdited) {
-      const todos = [...state.todos].filter((todo) => {
+      const todos = [...state.totalTodos].map((todo) => {
         if (todo.id === todoEdited.id) {
           todo.description = todoEdited.description
         }
@@ -94,10 +121,21 @@ export default createStore({
         return todo
       })
 
-      commit('setTodos', todos)
+      commit('setTotalTodos', todos)
+    },
+    changePriority({ commit, state }, todoEdited) {
+      const todos = [...state.totalTodos].map((todo) => {
+        if (todo.id === todoEdited.todoId) {
+          todo.priority = todoEdited.priorityName
+        }
+
+        return todo
+      })
+
+      commit('setTotalTodos', todos)
     },
     clearAll({ commit }) {
-      commit('setTodos', [])
+      commit('setTotalTodos', [])
     },
   },
 })
