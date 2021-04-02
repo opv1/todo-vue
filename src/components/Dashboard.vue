@@ -121,7 +121,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: calc(100% - 155px);
+  height: calc(100% - 170px);
 
   &__list {
     display: flex;
@@ -225,7 +225,7 @@ export default {
     }
 
     &:nth-child(1) {
-      min-width: 100px;
+      min-width: 90px;
     }
 
     &:nth-child(3) {
@@ -395,9 +395,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 395px) {
+@media screen and (max-width: 402px) {
   .dashboard {
-    height: calc(100% - 190px);
+    height: calc(100% - 207px);
   }
 }
 </style>

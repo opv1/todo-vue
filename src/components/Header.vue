@@ -67,9 +67,10 @@ export default {
 @import '@/variables.scss';
 
 .header {
+  position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 
   &__title {
     font-size: 1.5rem;
@@ -149,6 +150,7 @@ export default {
   &__input {
     outline: none;
     border: none;
+    padding: 0;
     width: 100%;
     color: $blackColor;
 
@@ -178,6 +180,9 @@ export default {
   }
 
   &__error {
+    position: absolute;
+    left: 0;
+    top: 135px;
     padding: 0.5rem;
     color: #f00;
   }
