@@ -20,18 +20,17 @@
     </div>
     <form class="header__form">
       <input
-        class="header__input"
+        :class="['header__input', { error: error }]"
         v-model="value"
         type="text"
-        :placeholder="placeholder"
+        :placeholder="
+          error ? 'Please do not leave the field empty' : 'Enter anything'
+        "
       />
       <button class="header__button" @click.prevent="submitForm">
         <i class="fas fa-arrow-right" />
       </button>
     </form>
-    <span class="header__error" v-show="error"
-      >Please do not leave the field empty</span
-    >
   </div>
 </template>
 
@@ -42,7 +41,6 @@ export default {
   name: 'Header',
   data: () => ({
     value: '',
-    placeholder: 'Enter anything',
   }),
   computed: {
     ...mapGetters([
@@ -157,6 +155,12 @@ export default {
     &::placeholder {
       color: rgba(110, 110, 110, 0.493);
     }
+
+    &.error {
+      &::placeholder {
+        color: #f00;
+      }
+    }
   }
 
   &__button {
@@ -177,14 +181,6 @@ export default {
     &:hover {
       background: rgba(58, 56, 56, 0.089);
     }
-  }
-
-  &__error {
-    position: absolute;
-    left: 0;
-    top: 135px;
-    padding: 0.5rem;
-    color: #f00;
   }
 }
 </style>
