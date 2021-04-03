@@ -5,10 +5,17 @@ import { dateFormat } from '@/utils/dateFormat'
 export default createStore({
   state: {
     error: false,
+    modal: false,
+    temporary: {},
     priorities: {
       Low: { name: 'Low', color: '#3b037a' },
       Medium: { name: 'Medium', color: '#f80' },
       High: { name: 'High', color: '#f00' },
+    },
+    tags: {
+      Home: { name: 'Home', color: '#ebc806' },
+      Peronal: { name: 'Peronal', color: '#089dca' },
+      Work: { name: 'Work', color: '#7514b6' },
     },
     currentTodos: 'total',
     displayedTodos: [],
@@ -18,6 +25,7 @@ export default createStore({
         description:
           'Lorem ipsum dolor sit amet consectetur, adipisicing elit.',
         priority: 'Low',
+        tag: 'Home',
         date: 'March 31, 2021',
         complete: false,
       },
@@ -26,6 +34,7 @@ export default createStore({
         description:
           'Ab, magni quod hic dolore omnis culpa perferendis temporibus tempore ratione, molestias exercitationem odio numquam ipsum.',
         priority: 'Medium',
+        tag: 'Work',
         date: 'March 31, 2021',
         complete: true,
       },
@@ -33,6 +42,7 @@ export default createStore({
         id: 3,
         description: 'Laborum repellendus officiis itaque nisi in!',
         priority: 'High',
+        tag: 'Peronal',
         date: 'March 31, 2021',
         complete: false,
       },
@@ -41,6 +51,15 @@ export default createStore({
   mutations: {
     setError(state, payload) {
       state.error = payload
+    },
+    setModal(state, payload) {
+      state.modal = payload
+    },
+    setTemporary(state, payload) {
+      state.temporary = payload
+    },
+    setTags(state, payload) {
+      state.tags = payload
     },
     setCurrentTodos(state, payload) {
       state.currentTodos = payload
@@ -54,7 +73,10 @@ export default createStore({
   },
   getters: {
     error: (state) => state.error,
+    modal: (state) => state.modal,
+    temporary: (state) => state.temporary,
     priorities: (state) => state.priorities,
+    tags: (state) => state.tags,
     currentTodos: (state) => state.currentTodos,
     displayedTodos: (state) => {
       if (state.currentTodos === 'done')
@@ -88,6 +110,7 @@ export default createStore({
         id: uuidv4(),
         description: todoDescription,
         priority: 'Low',
+        tag: 'Peronal',
         date: dateFormat(),
         complete: false,
       }
@@ -133,6 +156,34 @@ export default createStore({
       })
 
       commit('setTotalTodos', todos)
+    },
+    openModal({ commit, state }, todoId) {
+      const todo = [...state.totalTodos].find((todo) => todo.id === todoId)
+
+      commit('setTemporary', todo)
+      commit('setModal', true)
+    },
+    closeModal({ commit }) {
+      commit('setTemporary', {})
+      commit('setModal', false)
+    },
+    addTag({ commit, state }, tag) {
+      const tags = { ...state.tags, [tag]: { name: tag, color: 'red' } }
+
+      commit('setTags', tags)
+    },
+    changeTag({ commit, state, dispatch }, tag) {
+      const todos = [...state.totalTodos].map((todo) => {
+        if (todo.id === state.temporary.id) {
+          todo.tag = tag
+        }
+
+        return todo
+      })
+
+      commit('setTotalTodos', todos)
+
+      dispatch('closeModal')
     },
     clearAll({ commit }) {
       commit('setTotalTodos', [])

@@ -1,0 +1,170 @@
+<template>
+  <div class="modal" @click="onClickListener">
+    <div class="modal__container">
+      <div class="modal__block">
+        <input
+          class="modal__text"
+          v-model="valueText"
+          @keypress.enter="onAppendTag"
+          type="text"
+          placeholder="Enter tag"
+        />
+        <div class="modal__tags" v-for="tag of tags" :key="tag">
+          <div class="modal__represent">
+            <i class="modal__icon fas fa-tag" :style="{ color: tag.color }" />
+            <label class="modal__label" :for="tag.name"> {{ tag.name }}</label>
+          </div>
+          <input
+            :id="tag.name"
+            class="modal__radio"
+            @change="valueRadio = tag.name"
+            type="radio"
+            name="radio"
+            :checked="tag.name === temporary.tag"
+          />
+        </div>
+      </div>
+      <div class="modal__buttons">
+        <button class="modal__close" @click="onResetModal">Close</button>
+        <button class="modal__save" @click="changeTag(valueRadio)">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  name: 'Modal',
+  data: () => ({
+    valueText: '',
+    valueRadio: '',
+  }),
+  computed: {
+    ...mapGetters(['temporary', 'tags']),
+  },
+  methods: {
+    ...mapActions(['closeModal', 'addTag', 'changeTag']),
+    onClickListener(event) {
+      if (event.target.classList.contains('modal')) {
+        this.onResetModal()
+      }
+    },
+    onResetModal() {
+      this.valueText = ''
+      this.closeModal()
+    },
+    onAppendTag(event) {
+      if (!this.valueText) return
+
+      this.addTag(this.valueText)
+      this.valueText = ''
+      event.target.blur()
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/variables.scss';
+
+.modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 320px;
+  background: rgba(0, 0, 0, 0.322);
+
+  &__container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 1rem;
+    width: 90%;
+    min-height: 300px;
+    max-width: 350px;
+    background: #fff;
+    transform: translate(-50%, -50%);
+  }
+
+  &__text {
+    margin-bottom: 1rem;
+    outline: none;
+    border: 1px solid $blueColor;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 100%;
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__tags {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__icon {
+    margin: 0.1rem;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    color: $blackColor;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+
+  &__radio {
+    cursor: pointer;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  &__close {
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
+    background: #eee;
+    cursor: pointer;
+  }
+
+  &__save {
+    margin-left: 1rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
+    color: #fff;
+    background: $blueColor;
+    cursor: pointer;
+  }
+}
+</style>

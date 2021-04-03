@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard" @click="clickListener">
+  <div class="dashboard" @click="onClickListener">
     <ul class="dashboard__list" v-if="displayedTodos.length !== 0">
       <li class="dashboard__item" v-for="todo of displayedTodos" :key="todo.id">
         <textarea
@@ -17,27 +17,34 @@
                 background: priorities[todo.priority].color,
               }"
             />
-            <span class="dashboard__priority" @click="showOptions(todo.id)">{{
+            <span class="dashboard__priority" @click="onShowOptions(todo.id)">{{
               todo.priority
             }}</span>
             <div class="dashboard__select" v-show="todo.id === selectId">
               <span
-                class="dashboard__option"
+                :class="[
+                  'dashboard__option',
+                  { active: priority.name === todo.priority },
+                ]"
                 v-for="priority of priorities"
                 :key="priority[todo.priority]"
-                @click="chooseOption(todo.id, priority.name)"
+                @click="onChooseOption(todo.id, priority.name)"
                 >{{ priority.name }}</span
               >
             </div>
           </div>
           <div class="dashboard__block">
-            <i class="dashboard__tag fas fa-tag" />
+            <i
+              class="dashboard__tag fas fa-tag"
+              @click="openModal(todo.id)"
+              :style="{ color: tags[todo.tag].color }"
+            />
             <span class="dashboard__date">{{ todo.date }}</span>
           </div>
           <div class="dashboard__block">
             <input
               :id="todo.id"
-              class="dashboard__input"
+              class="dashboard__complete"
               @change="completeTodo(todo.id)"
               type="checkbox"
               :checked="todo.complete"
@@ -75,7 +82,7 @@ export default {
     selectId: null,
   }),
   computed: {
-    ...mapGetters(['priorities', 'displayedTodos']),
+    ...mapGetters(['priorities', 'tags', 'displayedTodos']),
   },
   methods: {
     ...mapActions([
@@ -83,30 +90,27 @@ export default {
       'completeTodo',
       'editDescription',
       'changePriority',
+      'openModal',
       'clearAll',
     ]),
-    clickListener(event) {
+    onClickListener(event) {
       if (
         !event.target.classList.contains('dashboard__priority') &&
         this.selectId !== null
       ) {
-        this.resetOptions()
+        this.onResetOptions()
       }
     },
-    showOptions(id) {
-      if (this.selectId === null) {
-        this.selectId = id
-      } else if (this.selectId !== id) {
-        this.selectId = id
-      } else {
-        this.resetOptions()
-      }
+    onShowOptions(id) {
+      if (this.selectId === null) this.selectId = id
+      else if (this.selectId !== id) this.selectId = id
+      else this.onResetOptions()
     },
-    resetOptions() {
+    onResetOptions() {
       this.selectId = null
     },
-    chooseOption(todoId, priorityName) {
-      this.resetOptions()
+    onChooseOption(todoId, priorityName) {
+      this.onResetOptions()
       this.changePriority({ todoId, priorityName })
     },
   },
@@ -208,7 +212,6 @@ export default {
   &__control {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding-left: 0.5rem;
     width: 100%;
     height: 100%;
@@ -220,15 +223,17 @@ export default {
     align-items: center;
     height: 100%;
 
-    &:last-child {
-      justify-content: flex-end;
+    &:nth-child(1) {
+      min-width: 100px;
+      max-width: 100px;
     }
 
-    &:nth-child(1) {
-      min-width: 90px;
+    &:nth-child(2) {
+      width: 100%;
     }
 
     &:nth-child(3) {
+      justify-content: flex-end;
       min-width: 75px;
     }
   }
@@ -263,6 +268,7 @@ export default {
     flex-direction: column;
     border: 1px solid $blueColor;
     border-radius: 5px;
+    box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
     background: #fff;
   }
 
@@ -272,6 +278,10 @@ export default {
     cursor: pointer;
 
     &:hover {
+      background: rgba(58, 56, 56, 0.089);
+    }
+
+    &.active {
       background: rgba(58, 56, 56, 0.089);
     }
   }
@@ -295,7 +305,7 @@ export default {
     color: $greyColor;
   }
 
-  &__input {
+  &__complete {
     display: none;
 
     &:checked + label::before {
@@ -395,7 +405,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 402px) {
+@media screen and (max-width: 358px) {
   .dashboard {
     height: calc(100% - 207px);
   }

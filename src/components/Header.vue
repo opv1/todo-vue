@@ -18,16 +18,16 @@
         >total: {{ totalTodos.length }}</span
       >
     </div>
-    <form class="header__form">
+    <form class="header__form" @:submit.prevent="onSubmitForm">
       <input
         :class="['header__input', { error: error }]"
-        v-model="value"
+        v-model="valueText"
         type="text"
         :placeholder="
           error ? 'Please do not leave the field empty' : 'Enter anything'
         "
       />
-      <button class="header__button" @click.prevent="submitForm">
+      <button class="header__button" @click.prevent="onSubmitForm">
         <i class="fas fa-arrow-right" />
       </button>
     </form>
@@ -40,7 +40,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Header',
   data: () => ({
-    value: '',
+    valueText: '',
   }),
   computed: {
     ...mapGetters([
@@ -53,9 +53,9 @@ export default {
   },
   methods: {
     ...mapActions(['selectTodos', 'addTodo']),
-    submitForm() {
-      this.addTodo(this.value)
-      this.value = ''
+    onSubmitForm() {
+      this.addTodo(this.valueText)
+      this.valueText = ''
     },
   },
 }

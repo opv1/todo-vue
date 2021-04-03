@@ -3,17 +3,24 @@
     <Header />
     <Dashboard />
   </div>
+  <Modal v-show="modal" />
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from '@/components/Header'
 import Dashboard from '@/components/Dashboard'
+import Modal from '@/components/Modal'
 
 export default {
   name: 'App',
   components: {
     Header,
     Dashboard,
+    Modal,
+  },
+  computed: {
+    ...mapGetters(['modal']),
   },
 }
 </script>
@@ -51,6 +58,10 @@ body {
 @media screen and (max-width: 768px) {
   body {
     font-size: 14px;
+  }
+
+  .container {
+    width: 90%;
   }
 }
 </style>
