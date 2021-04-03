@@ -8,6 +8,7 @@
           @keypress.enter="editDescription(todo)"
           @keyup.enter="$event.target.blur()"
           type="text"
+          :disabled="todo.complete"
         />
         <div class="dashboard__control">
           <div class="dashboard__block">
@@ -17,9 +18,9 @@
                 background: priorities[todo.priority].color,
               }"
             />
-            <span class="dashboard__priority" @click="onShowOptions(todo.id)">{{
-              todo.priority
-            }}</span>
+            <span class="dashboard__priority" @click="onShowOptions(todo.id)"
+              >{{ todo.priority }}
+            </span>
             <div class="dashboard__select" v-show="todo.id === selectId">
               <span
                 :class="[
@@ -29,16 +30,20 @@
                 v-for="priority of priorities"
                 :key="priority[todo.priority]"
                 @click="onChooseOption(todo.id, priority.name)"
-                >{{ priority.name }}</span
-              >
+                >{{ priority.name }}
+              </span>
             </div>
           </div>
           <div class="dashboard__block">
-            <i
-              class="dashboard__tag fas fa-tag"
-              @click="openModal(todo.id)"
-              :style="{ color: tags[todo.tag].color }"
-            />
+            <div class="dashboard__tag" @click="openModal(todo.id)">
+              <i
+                class="dashboard__tag__icon fas fa-tag"
+                :style="{ color: tags[todo.tag].color }"
+              />
+              <span class="dashboard__tag__name">{{ todo.tag }}</span>
+            </div>
+          </div>
+          <div class="dashboard__block">
             <span class="dashboard__date">{{ todo.date }}</span>
           </div>
           <div class="dashboard__block">
@@ -215,6 +220,7 @@ export default {
     padding-left: 0.5rem;
     width: 100%;
     height: 100%;
+    min-width: 420px;
   }
 
   &__block {
@@ -225,21 +231,24 @@ export default {
 
     &:nth-child(1) {
       min-width: 100px;
-      max-width: 100px;
     }
 
     &:nth-child(2) {
-      width: 100%;
+      min-width: 140px;
     }
 
     &:nth-child(3) {
+      width: 100%;
+    }
+
+    &:nth-child(4) {
       justify-content: flex-end;
       min-width: 75px;
     }
   }
 
   &__color {
-    margin: 3px;
+    margin: 0.1rem;
     border-radius: 100%;
     width: 10px;
     height: 10px;
@@ -287,13 +296,23 @@ export default {
   }
 
   &__tag {
+    display: flex;
+    align-items: center;
     margin: 0.1rem;
     border-radius: 5px;
     padding: 0.5rem;
-    font-size: 1.1rem;
-    color: $blackColor;
     transition: background 0.3s;
     cursor: pointer;
+
+    &__icon {
+      margin: 0.1rem;
+      font-size: 1.1rem;
+    }
+
+    &__name {
+      margin: 0.1rem 0.5rem;
+      color: $greyColor;
+    }
 
     &:hover {
       background: rgba(58, 56, 56, 0.089);
@@ -301,7 +320,7 @@ export default {
   }
 
   &__date {
-    margin: 0.5rem;
+    margin: 0.1rem;
     color: $greyColor;
   }
 
@@ -397,10 +416,30 @@ export default {
   }
 }
 
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 576px) {
   .dashboard {
+    &__control {
+      min-width: 100%;
+    }
+
     &__date {
       display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .dashboard {
+    &__block {
+      &:nth-child(2) {
+        min-width: 20px;
+      }
+    }
+
+    &__tag {
+      &__name {
+        display: none;
+      }
     }
   }
 }

@@ -3,25 +3,27 @@
     <div class="modal__container">
       <div class="modal__block">
         <input
-          class="modal__text"
+          class="modal__append"
           v-model="valueText"
           @keypress.enter="onAppendTag"
           type="text"
           placeholder="Enter tag"
+          maxlength="10"
         />
         <div class="modal__tags" v-for="tag of tags" :key="tag">
-          <div class="modal__represent">
+          <label class="modal__label" :for="tag.name">
             <i class="modal__icon fas fa-tag" :style="{ color: tag.color }" />
-            <label class="modal__label" :for="tag.name"> {{ tag.name }}</label>
-          </div>
+            {{ tag.name }}
+          </label>
           <input
             :id="tag.name"
-            class="modal__radio"
+            class="modal__input"
             @change="valueRadio = tag.name"
             type="radio"
             name="radio"
             :checked="tag.name === temporary.tag"
           />
+          <label class="modal__radio" :for="tag.name"></label>
         </div>
       </div>
       <div class="modal__buttons">
@@ -97,18 +99,24 @@ export default {
     transform: translate(-50%, -50%);
   }
 
-  &__text {
+  &__append {
     margin-bottom: 1rem;
     outline: none;
     border: 1px solid $blueColor;
     border-radius: 5px;
     padding: 0.5rem;
     width: 100%;
+    color: $blackColor;
+
+    &::placeholder {
+      color: rgba(110, 110, 110, 0.493);
+    }
   }
 
   &__block {
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
   }
 
   &__tags {
@@ -121,22 +129,60 @@ export default {
     }
   }
 
+  &__label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: $blackColor;
+    cursor: pointer;
+  }
+
   &__icon {
     margin: 0.1rem;
     border-radius: 5px;
     padding: 0.5rem;
     font-size: 1.1rem;
-    color: $blackColor;
     transition: background 0.3s;
-    cursor: pointer;
   }
 
-  &__label {
-    cursor: pointer;
+  &__input {
+    display: none;
+
+    &:checked + label::before {
+      position: absolute;
+      left: -28px;
+      top: -6px;
+      width: 10px;
+      height: 10px;
+      background: $blueColor;
+    }
   }
 
   &__radio {
+    position: relative;
     cursor: pointer;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -32px;
+      top: -10px;
+      border: 2px solid $blueColor;
+      border-radius: 100%;
+      width: 18px;
+      height: 18px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: -32px;
+      top: -10px;
+      border: 2px solid $blueColor;
+      border-radius: 100%;
+      width: 18px;
+      height: 18px;
+    }
   }
 
   &__buttons {
@@ -151,6 +197,7 @@ export default {
     border-radius: 5px;
     padding: 0.5rem 1rem;
     box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
+    color: $blackColor;
     background: #eee;
     cursor: pointer;
   }

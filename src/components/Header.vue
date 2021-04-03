@@ -5,29 +5,29 @@
       <span
         :class="['header__done', { active: currentTodos === 'done' }]"
         @click="selectTodos('done')"
-        >done: {{ doneTodos.length }}</span
-      >
+        >done: {{ doneTodos.length }}
+      </span>
       <span
         :class="['header__pending', { active: currentTodos === 'pending' }]"
         @click="selectTodos('pending')"
-        >pending: {{ pendingTodos.length }}</span
-      >
+        >pending: {{ pendingTodos.length }}
+      </span>
       <span
         :class="['header__total', { active: currentTodos === 'total' }]"
         @click="selectTodos('total')"
-        >total: {{ totalTodos.length }}</span
-      >
+        >total: {{ totalTodos.length }}
+      </span>
     </div>
     <form class="header__form" @:submit.prevent="onSubmitForm">
       <input
-        :class="['header__input', { error: error }]"
+        :class="['header__form__input', { error: error }]"
         v-model="valueText"
         type="text"
         :placeholder="
           error ? 'Please do not leave the field empty' : 'Enter anything'
         "
       />
-      <button class="header__button" @click.prevent="onSubmitForm">
+      <button class="header__form__button" @click.prevent="onSubmitForm">
         <i class="fas fa-arrow-right" />
       </button>
     </form>
@@ -143,43 +143,43 @@ export default {
     border-bottom: 1px solid $blueColor;
     padding: 0 0.5rem;
     width: 100%;
-  }
 
-  &__input {
-    outline: none;
-    border: none;
-    padding: 0;
-    width: 100%;
-    color: $blackColor;
+    &__input {
+      outline: none;
+      border: none;
+      padding: 0;
+      width: 100%;
+      color: $blackColor;
 
-    &::placeholder {
-      color: rgba(110, 110, 110, 0.493);
-    }
-
-    &.error {
       &::placeholder {
-        color: #f00;
+        color: rgba(110, 110, 110, 0.493);
+      }
+
+      &.error {
+        &::placeholder {
+          color: #f00;
+        }
       }
     }
-  }
 
-  &__button {
-    margin: 0.1rem;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem;
-    background: none;
-    transition: background 0.3s;
-    cursor: pointer;
+    &__button {
+      margin: 0.1rem;
+      outline: none;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem;
+      background: none;
+      transition: background 0.3s;
+      cursor: pointer;
 
-    i {
-      font-size: 1.1rem;
-      color: $blackColor;
-    }
+      i {
+        font-size: 1.1rem;
+        color: $blackColor;
+      }
 
-    &:hover {
-      background: rgba(58, 56, 56, 0.089);
+      &:hover {
+        background: rgba(58, 56, 56, 0.089);
+      }
     }
   }
 }
