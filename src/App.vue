@@ -42,7 +42,12 @@ body {
   justify-content: center;
   height: 100vh;
   min-width: 320px;
-  background: linear-gradient(rgb(47, 163, 163), rgb(58, 48, 143));
+  background:
+    linear-gradient(
+      0deg,
+      rgba(34, 193, 195, 1) 0%,
+      rgba(253, 187, 45, 1) 100%
+    );
 }
 
 .container {
