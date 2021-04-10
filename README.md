@@ -5,7 +5,7 @@
 
 ## Description
 
-Stack: Vue.js
+Stack: Vue
 
 ## [See the project](https://opv1.github.io/todo-vue)
 
