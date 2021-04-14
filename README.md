@@ -5,7 +5,7 @@
 
 ## Description
 
-Stack: Vue
+Stack: Vue + Vuex
 
 ## [See the project](https://opv1.github.io/todo-vue)
 
