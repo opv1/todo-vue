@@ -27,6 +27,7 @@ export default {
 
 <style lang="scss">
 @import '~normalize.css';
+@import '@/variables.scss';
 
 * {
   box-sizing: border-box;
@@ -34,12 +35,7 @@ export default {
 
 body {
   font-family: 'Lato', 'Arial', 'Helvetica', sans-serif;
-  background:
-    linear-gradient(
-      0deg,
-      rgba(34, 193, 195, 1) 0%,
-      rgba(253, 187, 45, 1) 100%
-    );
+  background: linear-gradient(rgba(34, 193, 195, 1), rgba(253, 187, 45, 1));
 }
 
 #app {
@@ -62,12 +58,12 @@ body {
   min-height: 90%;
   max-width: 1440px;
   max-height: 90%;
-  background: #fff;
+  background: $whiteColor;
 }
 
 @media screen and (max-width: 768px) {
   body {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .container {
