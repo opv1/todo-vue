@@ -74,13 +74,13 @@ export default {
 @import '@/variables.scss';
 
 .modal {
-  position: absolute;
+  position: fixed;
   left: 0;
+  right: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 0;
   min-width: 320px;
-  background: rgba(0, 0, 0, 0.322);
+  background: rgba(0, 0, 0, 0.3);
 
   &__container {
     position: absolute;
@@ -93,9 +93,8 @@ export default {
     border-radius: 5px;
     padding: 1rem;
     width: 90%;
-    min-height: 300px;
     max-width: 350px;
-    background: #fff;
+    background: $whiteColor;
     transform: translate(-50%, -50%);
   }
 
@@ -162,17 +161,7 @@ export default {
     position: relative;
     cursor: pointer;
 
-    &::before {
-      content: '';
-      position: absolute;
-      left: -32px;
-      top: -10px;
-      border: 2px solid $blueColor;
-      border-radius: 100%;
-      width: 18px;
-      height: 18px;
-    }
-
+    &::before,
     &::after {
       content: '';
       position: absolute;
@@ -191,27 +180,25 @@ export default {
     justify-content: flex-end;
   }
 
-  &__close {
+  &__close,
+  &__save {
     outline: none;
     border: none;
     border-radius: 5px;
     padding: 0.5rem 1rem;
     box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
+    cursor: pointer;
+  }
+
+  &__close {
     color: $blackColor;
     background: #eee;
-    cursor: pointer;
   }
 
   &__save {
     margin-left: 1rem;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
-    color: #fff;
+    color: $whiteColor;
     background: $blueColor;
-    cursor: pointer;
   }
 }
 </style>

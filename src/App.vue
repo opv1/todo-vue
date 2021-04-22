@@ -34,14 +34,6 @@ export default {
 
 body {
   font-family: 'Lato', 'Arial', 'Helvetica', sans-serif;
-}
-
-#app {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  min-width: 320px;
   background:
     linear-gradient(
       0deg,
@@ -50,13 +42,26 @@ body {
     );
 }
 
+#app {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  min-width: 320px;
+}
+
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 1px solid #eee;
   border-radius: 5px;
   padding: 1rem;
   width: 80%;
-  height: 90%;
+  min-height: 90%;
   max-width: 1440px;
+  max-height: 90%;
   background: #fff;
 }
 

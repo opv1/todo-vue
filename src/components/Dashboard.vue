@@ -65,7 +65,7 @@
         </div>
       </li>
     </ul>
-    <ul class="dashboard__list" v-else>
+    <ul class="dashboard__list" v-else :style="{ boxShadow: 'none' }">
       <li class="dashboard__empty">The list is empty</li>
     </ul>
     <button
@@ -127,13 +127,17 @@ export default {
 
 .dashboard {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: calc(100% - 170px);
+  width: 100%;
+  min-height: 100%;
+  max-height: 100%;
 
   &__list {
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     list-style: none;
@@ -141,7 +145,6 @@ export default {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
     box-shadow: inset 0 -10px 35px -30px rgba(194, 194, 194, 0.644);
     scrollbar-color: rgba(113, 113, 114, 0.356) transparent;
     scrollbar-width: thin;
@@ -178,6 +181,7 @@ export default {
   }
 
   &__description {
+    overflow: auto;
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
@@ -278,7 +282,7 @@ export default {
     border: 1px solid $blueColor;
     border-radius: 5px;
     box-shadow: 0 0 3px 1px rgba(221, 221, 221, 1);
-    background: #fff;
+    background: $whiteColor;
   }
 
   &__option {
@@ -341,17 +345,7 @@ export default {
     position: relative;
     cursor: pointer;
 
-    &::before {
-      content: '';
-      position: absolute;
-      left: -32px;
-      top: -11px;
-      border: 2px solid $blueColor;
-      border-radius: 5px;
-      width: 18px;
-      height: 18px;
-    }
-
+    &::before,
     &::after {
       content: '';
       position: absolute;
@@ -441,12 +435,6 @@ export default {
         display: none;
       }
     }
-  }
-}
-
-@media screen and (max-width: 358px) {
-  .dashboard {
-    height: calc(100% - 207px);
   }
 }
 </style>

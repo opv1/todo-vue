@@ -65,10 +65,10 @@ export default {
 @import '@/variables.scss';
 
 .header {
-  position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  width: 100%;
 
   &__title {
     font-size: 1.5rem;
@@ -86,9 +86,10 @@ export default {
     width: 100%;
   }
 
-  &__done {
+  &__done,
+  &__pending,
+  &__total {
     margin: 0.3rem;
-    border: 1px solid #03d30d;
     border-radius: 5px;
     padding: 0.3rem;
     font-weight: 700;
@@ -97,6 +98,11 @@ export default {
     color: #03d30d;
     transition: background 0.3s;
     cursor: pointer;
+  }
+
+  &__done {
+    border: 1px solid #03d30d;
+    color: #03d30d;
 
     &.active {
       background: rgba(3, 211, 13, 0.2);
@@ -104,16 +110,8 @@ export default {
   }
 
   &__pending {
-    margin: 0.3rem;
     border: 1px solid #cc0e00;
-    border-radius: 5px;
-    padding: 0.3rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: #cc0e00;
-    transition: background 0.3s;
-    cursor: pointer;
 
     &.active {
       background: rgba(204, 14, 0, 0.2);
@@ -121,16 +119,8 @@ export default {
   }
 
   &__total {
-    margin: 0.3rem;
     border: 1px solid #3b037a;
-    border-radius: 5px;
-    padding: 0.3rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: #3b037a;
-    transition: background 0.3s;
-    cursor: pointer;
 
     &.active {
       background: rgba(70, 1, 148, 0.2);
