@@ -274,8 +274,8 @@ export default {
 
   &__select {
     position: absolute;
-    left: 18px;
-    top: 48px;
+    left: 15px;
+    top: 35px;
     z-index: 100;
     display: flex;
     flex-direction: column;
